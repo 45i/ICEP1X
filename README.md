@@ -26,5 +26,5 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 - [45i](github.com/45i)
 
 ## Download
-
+Download [Here](\\Mian.exe)
 > Made with ♥ in Australia and India
