@@ -17,7 +17,9 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 `g: Make GIF [Work In Progress]`,
 `c: Select Color`,
 `Up/Down Arrow Keys: Merge Layers Up/Down`,
-`Shift+M: Merge All Layers`,
+`Shift+M: Merge All Layers`
+
+**Many more to come `soon`**
 
 ## Programmers:
 - [TrubLub23](github.com/TrubLub23)
