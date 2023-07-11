@@ -25,4 +25,6 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 - [TrubLub23](github.com/TrubLub23)
 - [45i](github.com/45i)
 
+## Download
+
 > Made with ♥ in Australia and India
