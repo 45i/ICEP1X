@@ -19,3 +19,8 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 `Up/Down Arrow Keys: Merge Layers Up/Down`,
 `Shift+M: Merge All Layers`,
 
+## Programmers:
+- [TrubLub23](github.com/TrubLub23)
+- [45i](github.com/45i)
+
+> Made with ♥ in Australia and India
