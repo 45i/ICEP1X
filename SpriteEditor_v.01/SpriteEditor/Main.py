@@ -57,7 +57,7 @@ load_sprite = False
 
 pygame.init()
 FPS = 120000
-pygame.display.set_caption("ICEPIX - The Scuffed Sprite Editor")
+pygame.display.set_caption("ICEP1X")
 screen = pygame.display.set_mode((0, 0),0)
 WINDOW_SIZE = (pygame.display.get_window_size()[0], pygame.display.get_window_size()[1])
 pygame.display.set_mode(WINDOW_SIZE,0,vsync=FPS)
