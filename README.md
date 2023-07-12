@@ -22,8 +22,8 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 **Many more to come `soon`**
 
 ## Programmers:
-- [TrubLub23](github.com/TrubLub23)
-- [45i](github.com/45i)
+- [TrubLub23](https://github.com/TrubLub23)
+- [45i](https://github.com/45i)
 
 ## Download
 Download [Here](Main.exe)
