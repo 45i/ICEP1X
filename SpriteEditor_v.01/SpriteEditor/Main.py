@@ -454,9 +454,10 @@ while True:
                 for layer in range(1,layers+1):
                     renderPixels(pixels, display, zoom, mouseX, mouseY, size_pixels,pygame.mouse.get_rel()[0],pygame.mouse.get_rel()[1])
                     pygame.image.save(display, f"{layer}.png" )
-                    time.sleep(2) # type: ignore
+                    
                     images.append((f"{layer}.png"))
-                    pixels=[]
+                    
+                    renderPixels([], display, zoom, mouseX, mouseY, size_pixels,pygame.mouse.get_rel()[0],pygame.mouse.get_rel()[1])
                     pixels=pixel_animation[layer].copy()
                 from PIL import Image
 
