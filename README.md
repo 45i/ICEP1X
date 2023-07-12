@@ -26,7 +26,7 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 - [45i](https://github.com/45i)
 
 ## Download
-Download [Here](Main.exe)
+Download [Here](ICEDP1X.exe)
 
 ## For Feature Requests
 [Open a new Issue](https://github.com/45i/ICEP1X/issues/new) under the label "Feature Requests" and write both a short and long description (in title and body fields respectively), describing how your feature should work. If it's good enough, we'll give our level best to make it happen. As such, if you happen to know python and you are fairly confident, you can always [Fork the Repo](https://github.com/45i/ICEP1X/fork) and make it happen yourself! (The feeling is much better, trust me)
