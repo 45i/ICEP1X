@@ -27,7 +27,9 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 - Direct Opening from Explorer
 - GIF creation
 - Layered Editing
-  Expect more `soon`
+
+Expect more `soon`
+
 ## Programmers:
 - [TrubLub23](https://github.com/TrubLub23)
 - [45i](https://github.com/45i)
