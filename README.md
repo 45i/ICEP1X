@@ -14,13 +14,20 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 `Escape: Reset Canvas, Open Sprite or Exit`,
 `Shift: Pick Color From Canvas`,
 `Left/Right Arrow Keys: Change/Create Layers`,
-`g: Make GIF [Work In Progress]`,
+`g: Make GIF (from layers)`,
 `c: Select Color`,
 `Up/Down Arrow Keys: Merge Layers Up/Down`,
 `Shift+M: Merge All Layers`
 
 **Many more to come `soon`**
 
+### Abilities
+- Super fast Sprite Editing
+- Opening, Saving and Rendering sprites (both as transparent bg and generic png)
+- Direct Opening from Explorer
+- GIF creation
+- Layered Editing
+  Expect more `soon`
 ## Programmers:
 - [TrubLub23](https://github.com/TrubLub23)
 - [45i](https://github.com/45i)
