@@ -32,7 +32,7 @@ try:
             res = requests.get(uri)
             print(res.json()) 
             print()
-            if response.status_code == 200:
+            if res.status_code == 200:
         # Get the content of the file from the response
                 content = res.json()["payload"]["blob"]["rawLines"]
                 # Decode the content from base64 encoding
@@ -65,8 +65,8 @@ try:
                     print(f"{local_path} created")
     else:
         # Print an error message if the request was not successful
-        print(f"Error: {response.status_code} - {response.json()['message']}")
+        showAlert(f"An Exception Occurred! Auto-Update Failed! \nException Details: {e} \nOpening Editor...")
     RunMainLoop()
 except Exception as e :
-    showAlert(f"An Exception Occurred! Auto-Update Failed! \n{e} \nOpening Editor...")
+    showAlert(f"An Exception Occurred! Auto-Update Failed! \nException Details: {e} \nOpening Editor...")
     RunMainLoop()
