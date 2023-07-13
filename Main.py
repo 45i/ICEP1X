@@ -31,11 +31,12 @@ try:
             uri = file["html_url"]
             res = requests.get(uri)
             print(res.json()) 
+            print()
             if response.status_code == 200:
         # Get the content of the file from the response
-                content = res.json()["blob"]["rawLines"]
+                content = res.json()["payload"]["blob"]["rawLines"]
                 # Decode the content from base64 encoding
-                decoded_content = base64.b64decode(content).decode("utf-8")
+                #decoded_content = base64.b64decode(content).decode("utf-8")
     
                 # Get the path of the local file
                 local_path = os.path.join(repo, file["path"])
@@ -47,25 +48,25 @@ try:
                         local_content = f.read()
     
                     # Check if the local file is up-to-date
-                    if local_content == decoded_content:
+                    if local_content == content:
                         print(f"{local_path} is up-to-date")
                     else:
                         # Write the contents of the remote file to the local file
-                        with open(local_path, "w") as f:
-                            f.write(decoded_content)
+                        with open(local_path, "w+") as f:
+                            f.writelines(content)
                         print(f"{local_path} updated")
                 else:
                     # Create the local directory if it does not exist
                     os.makedirs(os.path.dirname(local_path), exist_ok=True)
     
                     # Write the contents of the remote file to the local file
-                    with open(local_path, "w") as f:
-                        f.write(decoded_content)
+                    with open(local_path, "w+") as f:
+                        f.writelines(content)
                     print(f"{local_path} created")
     else:
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.json()['message']}")
     RunMainLoop()
 except Exception as e :
-    showAlert("An Exception Occurred! Auto-Update Failed! \nOpening Editor...")
+    showAlert(f"An Exception Occurred! Auto-Update Failed! \n{e} \nOpening Editor...")
     RunMainLoop()
