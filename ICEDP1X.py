@@ -1,5 +1,4 @@
-#test
-#from fileinput import _TextMode
+
 from showMessage import *
 from pygame import *
 from setup import *
@@ -524,7 +523,7 @@ def RunMainLoop():
                         saveFile()
                     else:
                         with open(saved_file+(".sprite"if ".sprite" not in saved_file else ""), "w") as f:
-                            f.write(str(pixel_animation))
+                            f.write(str(pixel_animation)) # type: ignore
                         f.close()
                 if event.key == K_c:
                     color = colorchooser.askcolor(title="Pick a Color")
