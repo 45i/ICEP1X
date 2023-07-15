@@ -27,7 +27,7 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 - Direct Opening from Explorer
 - GIF creation
 - Layered Editing
-- Automaticallytic Code Update from repo
+- Automatic Code Update from repo
 
 Expect more `soon`
 
