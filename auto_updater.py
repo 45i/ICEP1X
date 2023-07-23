@@ -65,8 +65,11 @@ def update():
                             os.makedirs(os.path.dirname(local_path), exist_ok=True)
             
                             # Write the contents of the remote file to the local file
-                            with open(local_path, "w+") as f:
-                                f.writelines(content)
+                            for j in content:
+                                    f=open(local_path,"a")
+                                
+                                    f.write(j)
+                                    f.write("\n")
                             print(f"{local_path} created")
                             log+=f"{local_path} created\n"
             showAlert(f"Auto-Update Completed Successfully!\n{len(log.splitlines())} files updated!")

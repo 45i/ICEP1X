@@ -147,11 +147,12 @@ def create_controls_file():
     help_text += f"Scroll Up/Down: Change Brush Size\n"
     help_text += f"Alt: Toggle Brush Visibility\n"
     help_text += f"Escape: Reset Canvas, Open Sprite or Exit\n"
-    help_text += f"Shift: Pick Color From Canvas\n"
+    help_text += f"Shift+Click: Pick Color At Mouse Position In Canvas\n"
     help_text += f"Left/Right Arrow Keys: Change/Create Layers\n"
-    help_text+=f"g: Make GIF [Work In Progress]\n"
+    help_text+=f"g: Make GIF [From Layers]]\n"
     help_text+=f"Up/Down Arrow Keys: Merge Layers Up/Down\n"
     help_text+=f"Shift+M: Merge All Layers\n"
+    help_text+=f"c: Pick Color\n"
 
 
 
@@ -191,7 +192,7 @@ def createPixel(xpos, ypos, color, pixel_size):
     pixels_temp={}
     if saved:
         try:
-            f = open(last_saved_file)
+            f = open(last_saved_file, "r")
             load_data={}
             load_data=(ast.literal_eval(f.read()))
             f.close()
@@ -651,14 +652,15 @@ def RunMainLoop():
     
             
         surf = pygame.transform.scale(display, (WINDOW_SIZE[0], WINDOW_SIZE[1]))
-        screen.blit(surf, (0, 0))
-        pygame.draw.rect(screen, (50, 50, 50), (0, WINDOW_SIZE[1] - BAR_HEIGHT, WINDOW_SIZE[0], BAR_HEIGHT))
     
+        screen.blit(surf, (0, 0))
         #pygame.display.flip()
         pygame.display.update()
     
         clock.tick(FPS)
     
     
-    
+        pygame.draw.rect(screen, (50, 50, 50), (0, WINDOW_SIZE[1] - BAR_HEIGHT, WINDOW_SIZE[0], BAR_HEIGHT))
+
+
     
