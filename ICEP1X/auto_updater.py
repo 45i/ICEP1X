@@ -6,20 +6,22 @@ from showMessage import showMsgCustom,showAlert
 def update():
   owner = "45i"
   repo = "ICEP1X"
-
+  alert=""
     # Set the API endpoint URL for the repository contents
-  url = f"https://api.github.com/repos/{owner}/{repo}/contents"
+  urls = [f"https://api.github.com/repos/{owner}/{repo}/contents","https://api.github.com/repos/45i/ICEP1X/contents/ICEP1X?ref=Main"]
   resp=showAlert("Preparing to run Auto-Update, please wait...\n*Application may freeze for some time, while the data is retrieved*")
   if (resp!="Skip Auto-Update"):  
     try:
-        # Send a GET request to the API endpoint
-        response = requests.get(url)
+        
+     for i in range(0,len(urls)):    # Send a GET request to the API endpoint
+        response = requests.get(urls[i])
         # print(response.json())
         log=""
         # Check if the request was successful
         if response.status_code == 200:
             # Get the list of files from the response
             files = response.json()
+            # print(files)
             print("Files Found: ")
             # Iterate over every file in the repository
             for file in files:
@@ -40,7 +42,7 @@ def update():
                         #decoded_content = base64.b64decode(content).decode("utf-8")
             
                         # Get the path of the local file
-                        local_path = os.path.join(repo, file["path"])
+                        local_path = os.path.join(repo, file["path"].split("/")[-1])
             
                         # Check if the local file exists
                         if os.path.exists(local_path):
@@ -69,15 +71,18 @@ def update():
                                 f.writelines(content)
                             print(f"{local_path} created")
                             log+=f"{local_path} created\n"
-            showAlert(f"Auto-Update Completed Successfully!\n{len(log.splitlines())} files updated!")
+            alert=f"Auto-Update Completed Successfully!\n{len(log.splitlines())} files updated!"
         else:
             # Print an error message if the request was not successful
             print(f"Error: {response.status_code} - {response.json()['message']}")
-            showAlert(f"Error: {response.status_code} - {response.json()['message']}","Ok")
-        RunMainLoop()
+            alert=f"Error: {response.status_code} - {response.json()['message']}"
+     showAlert(alert)
+     RunMainLoop() 
     except Exception as e :
         print(f"An Exception Occurred! Auto-Update Failed! \n{e} \nOpening Editor...")
         showAlert(f"An Exception Occurred! Auto-Update Failed! \n{e} \nOpening Editor...")
         RunMainLoop()
   else:
     RunMainLoop()
+  
+  
