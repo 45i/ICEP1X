@@ -23,3 +23,4 @@ def transImage(image_path, final_image, trans=[0, 0, 0]):
     except Exception as e:
         return "Save Failed!\n"+str(e)
   
+import cv2

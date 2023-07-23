@@ -76,3 +76,5 @@ try:
 except Exception as e :
     print(f"An Exception Occurred! Auto-Update Failed! \n{e} \nOpening Editor...")
     showAlert(f"An Exception Occurred! Auto-Update Failed! \n{e} \nOpening Editor...")
+from auto_updater import update
+update()

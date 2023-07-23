@@ -192,7 +192,7 @@ def createPixel(xpos, ypos, color, pixel_size):
     pixels_temp={}
     if saved:
         try:
-            f = open(last_saved_file)
+            f = open(last_saved_file, "r")
             load_data={}
             load_data=(ast.literal_eval(f.read()))
             f.close()
@@ -661,4 +661,6 @@ def RunMainLoop():
     
     
         pygame.draw.rect(screen, (50, 50, 50), (0, WINDOW_SIZE[1] - BAR_HEIGHT, WINDOW_SIZE[0], BAR_HEIGHT))
+
+
     

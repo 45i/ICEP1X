@@ -18,3 +18,4 @@ def initial_setup():
             with winreg.CreateKey(type_key, "shell\\open\\command") as command_key:
                   # Set the default value to the command to run the Python script with the clicked file as an argument
                   winreg.SetValue(command_key, "", winreg.REG_SZ, f'"{sys.executable}" "{script_path}" "%1"')
+import winreg

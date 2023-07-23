@@ -8,3 +8,4 @@ def showYesNo(message):
     return pyautogui.confirm(message, buttons=['Yes','No'],timeout=None) # type: ignore
 
 def showMsgCustom(message, buttons):
+import tkinter as tk
