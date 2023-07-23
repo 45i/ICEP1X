@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['ICEDP1X.py'],
+    ['Main.py'],
     pathex=[],
     binaries=[],
     datas=[],

@@ -651,14 +651,14 @@ def RunMainLoop():
     
             
         surf = pygame.transform.scale(display, (WINDOW_SIZE[0], WINDOW_SIZE[1]))
-    
         screen.blit(surf, (0, 0))
+        pygame.draw.rect(screen, (50, 50, 50), (0, WINDOW_SIZE[1] - BAR_HEIGHT, WINDOW_SIZE[0], BAR_HEIGHT))
+    
         #pygame.display.flip()
         pygame.display.update()
     
         clock.tick(FPS)
     
     
-        pygame.draw.rect(screen, (50, 50, 50), (0, WINDOW_SIZE[1] - BAR_HEIGHT, WINDOW_SIZE[0], BAR_HEIGHT))
     
     
