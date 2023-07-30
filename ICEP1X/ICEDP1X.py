@@ -85,6 +85,7 @@ root = Tk()
 root.withdraw()
 last_saved_file=""
 saved_file=""
+onion_skin = False
 willshowprompt=True
 history[len(history)]=pixels.copy()
 import sys
@@ -302,7 +303,7 @@ def rgb_to_hex(rgb):
     r, g, b = rgb
     return f"#{r:02x}{g:02x}{b:02x}"
 def RunMainLoop():
-    global can_paint,mouse_down,brush_type,mouseX,mouseY,current_color,size_pixels,color_text,mouse_text,pixel_text,layercode,layers,pixels,screen,w1,w2,screen_division,pixels_last,error,altpressed,history_count,SPEED,pixel_animation,saved_file,tag,count_error,altwaspressed
+    global can_paint,mouse_down,brush_type,mouseX,mouseY,current_color,size_pixels,color_text,mouse_text,pixel_text,layercode,layers,pixels,screen,w1,w2,screen_division,pixels_last,error,altpressed,history_count,SPEED,pixel_animation,saved_file,tag,count_error,altwaspressed,onion_skin
     import os
     while True:
         surf = pygame.Surface ((WINDOW_SIZE[0], WINDOW_SIZE[1]))
@@ -549,6 +550,9 @@ def RunMainLoop():
                     #print(pixel_animation[a])
                 if event.key == pygame.K_KP5:
                     brush_type = "random"
+                if event.key == pygame.K_o:
+                    
+                    onion_skin= not onion_skin
                 if event.key == pygame.K_m and pygame.key.get_mods() & KMOD_CTRL:
                     
                     color = colorchooser.askcolor(title="Pick a Transparency Key",initialcolor=rgb_to_hex(current_color))
@@ -664,3 +668,4 @@ def RunMainLoop():
 
 
     
+    global can_paint,mouse_down,brush_type,mouseX,mouseY,current_color,size_pixels,color_text,mouse_text,pixel_text,layercode,layers,pixels,screen,w1,w2,screen_division,pixels_last,error,altpressed,history_count,SPEED,pixel_animation,saved_file,tag,count_error,altwaspressed

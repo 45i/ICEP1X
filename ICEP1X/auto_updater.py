@@ -13,8 +13,8 @@ def update():
   if (resp!="Skip Auto-Update"):  
     try:
         
-     for i in range(0,len(urls)):    # Send a GET request to the API endpoint
-        response = requests.get(urls[i])
+     for i in urls:    # Send a GET request to the API endpoint
+        response = requests.get(i)
         # print(response.json())
         log=""
         # Check if the request was successful
@@ -24,6 +24,7 @@ def update():
             # print(files)
             print("Files Found: ")
             # Iterate over every file in the repository
+
             for file in files:
                 if file["name"].endswith(".py"):
                     print(file["name"])
@@ -85,4 +86,4 @@ def update():
   else:
     RunMainLoop()
   
-  
+    
