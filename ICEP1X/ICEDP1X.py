@@ -116,7 +116,7 @@ def readData (file):
             # # Blit image onto display surface
             # display.blit(background_image, (0, 0))
             # pygame.display.update()
-            im = Image.open(file, ' r')
+            im = Image.open(file, 'r')
             pix_val = list(im.getdata())
             for i in range(0,WINDOW_SIZE[0]):
                 for j in range(0,WINDOW_SIZE[1]):
