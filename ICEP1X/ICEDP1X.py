@@ -117,8 +117,8 @@ def readData (file):
             # pygame.display.update()
             im = Image.open(file, ' r')
             pix_val = list(im.getdata())
-            foreach i in range(0,WINDOW_SIZE[0]):
-                foreach j in range(0,WINDOW_SIZE[1]):
+            for i in range(0,WINDOW_SIZE[0]):
+                for j in range(0,WINDOW_SIZE[1]):
                     pixels[i][j]=pix_val[i][j]
 
     else:
