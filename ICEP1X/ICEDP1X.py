@@ -118,9 +118,11 @@ def readData (file):
             # pygame.display.update()
             im = Image.open(file, 'r')
             pix_val = list(im.getdata())
-            for i in range(0,WINDOW_SIZE[0]):
-                for j in range(0,WINDOW_SIZE[1]):
-                    pixels[i][j]=pix_val[i][j]
+            for i in range(0,len(pix_val)):
+                pixels=[]
+                
+                c = Color(pix_val[i][0],pix_val[i][1],pix_val[i][2])
+                pixels.append([[186.0, 180.5, [c], 67]])
 
     else:
         pixels=[]
