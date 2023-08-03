@@ -119,10 +119,17 @@ def readData (file):
             im = Image.open(file, 'r')
             pix_val = list(im.getdata())
             pixels=[]
+            r=0
+            col=0
             for i in range(0,len(pix_val)):
                 
                 c = Color(pix_val[i][0],pix_val[i][1],pix_val[i][2])
-                pixels.append([[186.0, 180.5, [c], 67]])
+                    
+                pixels.append([r,col , [c], 1])
+                col+=1
+                if col >= im.width:
+                    col=0
+                    r+=1
 
     else:
         pixels=[]
@@ -260,7 +267,8 @@ def renderPixels(pixels, display, zoom, mouseX, mouseY, size_pixels, panX, panY)
                         pygame.draw.rect(display, pixels[j][2][0], pygame.Rect(
                             pixels[j][0], pixels[j][1], pixels[j][3], pixels[j][3]))
                     except:
-                        pygame.draw.rect(display, pixels[j][2][0], pygame.Rect(
+                        f=pixels[j][2]
+                        pygame.draw.rect(display, f[0], pygame.Rect(
                             pixels[j][0], pixels[j][1], 1, 1))
                         count_error += 1
                         if count_error <= 1:
@@ -675,3 +683,4 @@ def RunMainLoop():
 
 
     
+                
