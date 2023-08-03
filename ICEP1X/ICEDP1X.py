@@ -85,7 +85,6 @@ root = Tk()
 root.withdraw()
 last_saved_file=""
 saved_file=""
-onion_skin = False
 willshowprompt=True
 history[len(history)]=pixels.copy()
 import sys
@@ -111,11 +110,17 @@ def readData (file):
             history_count=0
             history={}
         elif os.path.splitext(file)[1] == ".png":
-            background_image = pygame.image.load(file)
+            # background_image = pygame.image.load(file)
 
-            # Blit image onto display surface
-            display.blit(background_image, (0, 0))
-            pygame.display.update()
+            # # Blit image onto display surface
+            # display.blit(background_image, (0, 0))
+            # pygame.display.update()
+            im = Image.open(file, ' r')
+            pix_val = list(im.getdata())
+            foreach i in range(0,WINDOW_SIZE[0]):
+                foreach j in range(0,WINDOW_SIZE[1]):
+                    pixels[i][j]=pix_val[i][j]
+
     else:
         pixels=[]
     
@@ -128,11 +133,13 @@ def openFile( display):
     readData(file)
 if len(sys.argv) > 1:
     filename = sys.argv[1]
-    if filename.endswith(".sprite"):
+    if filename.endswith(".sprite")or filename.endswith(".png"):
         # Open the file and do something with it
         print("Opening file: " + filename)
         willshowprompt=False
         readData(filename)
+    
+    
 
 saved = False
 def create_controls_file():
@@ -303,7 +310,7 @@ def rgb_to_hex(rgb):
     r, g, b = rgb
     return f"#{r:02x}{g:02x}{b:02x}"
 def RunMainLoop():
-    global can_paint,mouse_down,brush_type,mouseX,mouseY,current_color,size_pixels,color_text,mouse_text,pixel_text,layercode,layers,pixels,screen,w1,w2,screen_division,pixels_last,error,altpressed,history_count,SPEED,pixel_animation,saved_file,tag,count_error,altwaspressed,onion_skin
+    global can_paint,mouse_down,brush_type,mouseX,mouseY,current_color,size_pixels,color_text,mouse_text,pixel_text,layercode,layers,pixels,screen,w1,w2,screen_division,pixels_last,error,altpressed,history_count,SPEED,pixel_animation,saved_file,tag,count_error,altwaspressed
     import os
     while True:
         surf = pygame.Surface ((WINDOW_SIZE[0], WINDOW_SIZE[1]))
@@ -550,9 +557,6 @@ def RunMainLoop():
                     #print(pixel_animation[a])
                 if event.key == pygame.K_KP5:
                     brush_type = "random"
-                if event.key == pygame.K_o:
-                    
-                    onion_skin= not onion_skin
                 if event.key == pygame.K_m and pygame.key.get_mods() & KMOD_CTRL:
                     
                     color = colorchooser.askcolor(title="Pick a Transparency Key",initialcolor=rgb_to_hex(current_color))
@@ -668,4 +672,3 @@ def RunMainLoop():
 
 
     
-    global can_paint,mouse_down,brush_type,mouseX,mouseY,current_color,size_pixels,color_text,mouse_text,pixel_text,layercode,layers,pixels,screen,w1,w2,screen_division,pixels_last,error,altpressed,history_count,SPEED,pixel_animation,saved_file,tag,count_error,altwaspressed
