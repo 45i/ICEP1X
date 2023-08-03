@@ -11,6 +11,7 @@ import random
 import pyautogui
 from pyautogui import *
 from tkinter import *
+from PIL import Image
 
 clock = pygame.time.Clock()
 
