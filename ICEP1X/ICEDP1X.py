@@ -135,6 +135,7 @@ def readData (file):
             layers = len(pixel_animation)
             history_count=0
             history={}
+            history[len(history)]=pixels.copy()
         elif os.path.splitext(file)[1] == ".png" or os.path.splitext(file)[1] == ".jpg" or os.path.splitext(file)[1] == ".jpeg":
             # background_image = pygame.image.load(file)
 
@@ -145,6 +146,7 @@ def readData (file):
             img = Image.open(file, 'r')
             result=img
             result.thumbnail((w1,w2))#type: ignore
+            
             # if  img.height > WINDOW_SIZE[0] or img.width > WINDOW_SIZE[1]:
                 # Scale down using BILINEAR to 32x32
                 # result = img.resize((WINDOW_SIZE[0],WINDOW_SIZE[1]), resample=Image.Resampling.BILINEAR)
@@ -235,7 +237,11 @@ def readData (file):
             for i in range(0,len(rows2)):
                 # for j in range(0,len(rows2[i])) :
                     pixels.append(rows2[i])
-                    
+            saved=False
+            layers = len(pixel_animation)
+            history_count=0
+            history={}
+            history[len(history)]=pixels.copy()    
     else:
         pixels=[]
     
