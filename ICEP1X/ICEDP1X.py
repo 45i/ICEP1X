@@ -170,7 +170,9 @@ def readData (file):
             n = 3
             scale_factor=1
             factors.pop(0)
+            factors.append(3)
             f_str.pop(0)
+            f_str.append("3")
             if len(factors)>1:
                 factors.pop(0)
                 
