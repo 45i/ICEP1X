@@ -55,7 +55,7 @@ pygame.display.set_caption("ICEP1X")
 screen = pygame.display.set_mode((0, 0),0)
 WINDOW_SIZE = (pygame.display.get_window_size()[0], pygame.display.get_window_size()[1])
 pygame.display.set_mode(WINDOW_SIZE,0,vsync=FPS)
-title = "ICEPIX"
+title = "ICEP1X"
 
 
 # Set the position of the window (x, y)
@@ -71,7 +71,7 @@ RED = (255, 0, 0)
 
 #screen = pygame.display.set_mode(WINDOW_SIZE,0, 32)
 screen_division = 2
-zoom = 10
+zoom = 1
 w1 = WINDOW_SIZE[0] / screen_division
 w2 = WINDOW_SIZE[1] / screen_division
 
@@ -89,6 +89,31 @@ saved_file=""
 willshowprompt=True
 history[len(history)]=pixels.copy()
 import sys
+can_paint = True
+
+
+        
+def renderPixels(pixels, display, zoom, mouseX, mouseY, size_pixels, panX, panY):
+    i = 0
+    global count_error,can_paint
+    for j in range(0,len(pixels)):
+        
+            if can_paint == True:
+                if altpressed==True: pygame.draw.rect(display, current_color, pygame.Rect(mouseX,mouseY, size_pixels, size_pixels))
+                        
+                if True:
+                    try:    
+                        pygame.draw.rect(display, pixels[j][2][0], pygame.Rect(
+                            pixels[j][0], pixels[j][1], pixels[j][3], pixels[j][3]))
+                    except:
+                        f=pixels[j][2]
+                        pygame.draw.rect(display, f[0], pygame.Rect(
+                            pixels[j][0], pixels[j][1], 1, 1))
+                        count_error += 1
+                        if count_error <= 1:
+                            error = True
+        #             i += 1
+        # j+=1
 def readData (file):
     global display,pixel_animation,pixels, load_sprite, a,last_saved_file,saved,layercode,layers,history_count,history
     if file != "":
@@ -110,27 +135,107 @@ def readData (file):
             layers = len(pixel_animation)
             history_count=0
             history={}
-        elif os.path.splitext(file)[1] == ".png":
+        elif os.path.splitext(file)[1] == ".png" or os.path.splitext(file)[1] == ".jpg" or os.path.splitext(file)[1] == ".jpeg":
             # background_image = pygame.image.load(file)
 
             # # Blit image onto display surface
             # display.blit(background_image, (0, 0))
             # pygame.display.update()
-            im = Image.open(file, 'r')
-            pix_val = list(im.getdata())
+            
+            img = Image.open(file, 'r')
+            result=img
+            result.thumbnail((w1,w2))#type: ignore
+            # if  img.height > WINDOW_SIZE[0] or img.width > WINDOW_SIZE[1]:
+                # Scale down using BILINEAR to 32x32
+                # result = img.resize((WINDOW_SIZE[0],WINDOW_SIZE[1]), resample=Image.Resampling.BILINEAR)
+#             imgSmall = img.resize((32,32), resample=Image.Resampling.BILINEAR)
+
+# # Scale back up using NEAREST to original size
+#             result = imgSmall.resize(img.size, Image.Resampling.NEAREST)
+            
+            pix_val = list(result.getdata())
             pixels=[]
             r=0
             col=0
+            n2=result.width
+            n1=result.height
+            factors=[]
+            f_str=[]
+            for i in range(1, (n1 if n1>=n2 else n2)+1):
+                if n1 % i == 0 and n2 % i == 0:
+                    factors.append(i)
+                    f_str.append(str(i))
+            n = 3
+            scale_factor=1
+            factors.pop(0)
+            f_str.pop(0)
+            if len(factors)>1:
+                factors.pop(0)
+                
+                gg=pyautogui.prompt(f"Select a compression factor for the image\nAvaliable factors: {', '.join(f_str)}")#type: ignore
+                if gg != None and f_str.__contains__((gg)) :
+                    scale_factor=int(eval(gg))
+                else:
+                    scale_factor=factors[1 if len(factors)>1 else 0] if factors[1 if len(factors)>1 else 0] > n else n
+            else:
+                scale_factor=(factors[0] if factors[0] > n else n) if len(factors)!=0 else n
+            # scale_factor=factors[1 if len(factors)>1 else 0] if factors[1 if len(factors)>1 else 0] > n else n
+            rows=[]
+            cols=[]
+            
+            print(f"Compression factor: {scale_factor}\nAvaliable factors: {factors}")
             for i in range(0,len(pix_val)):
                 
                 c = Color(pix_val[i][0],pix_val[i][1],pix_val[i][2])
                     
-                pixels.append([r,col , [c], 1])
+                cols.append([col,r , [c], 10])
                 col+=1
-                if col >= im.width:
+                if col >= result.width:
                     col=0
                     r+=1
+                    rows.append(cols)
+                    cols=[]
+            rows2=[]
+            # rows2=rows.copy()
+            counter_rows=0
+            for i in range(0,len(rows),scale_factor-1):
+                counter_columns=0
+                for j in range(0,len(rows[i]),scale_factor-1) :
+                    color_tags = []
+                    color_freq = []
+                    for k in range (0,scale_factor-1 if j+scale_factor-1 < len(rows[i]) else len(rows[i])-j-1):
+                        if rows[i][j+k][2] not in color_tags:
+                            color_tags.append(rows[i][j+k][2])
+                            color_freq.append(1)
+                        else:
+                            color_freq[color_tags.index(rows[i][j+k][2])]+=1
+                    for k in range (0,scale_factor-1 if i+scale_factor-1 < len(rows) else len(rows)-i-1):
+                        if rows[i+k][j][2] not in color_tags:
+                            color_tags.append(rows[i+k][j][2])
+                            color_freq.append(1)
+                        else:
+                            color_freq[color_tags.index(rows[i+k][j][2])]+=1
+                    if all(isinstance(freq, int) and freq > 0 for freq in color_freq):
 
+                        rows[i][j][2]=color_tags[color_freq.index(max(color_freq))]
+                        rows[i][j][3]=scale_factor
+                        rows2.append(rows[i][j])
+                        rows2[counter_rows][2]=color_tags[color_freq.index(max(color_freq))]
+                        rows2[counter_rows][3]=scale_factor
+                    else:
+                        rows2.append(rows[i][j])
+                        rows2[counter_rows][2]=color_tags[color_freq.index(max(color_freq))]
+                        rows2[counter_rows][3]=scale_factor
+                    counter_columns+=1
+                    # print(color_tags)
+                    # print(color_freq)
+                    # print(color_tags[color_freq.index(max(color_freq))])
+                counter_rows+=1
+            br = 0
+            for i in range(0,len(rows2)):
+                # for j in range(0,len(rows2[i])) :
+                    pixels.append(rows2[i])
+                    
     else:
         pixels=[]
     
@@ -139,7 +244,7 @@ def openFile( display):
     global pixel_animation,pixels, load_sprite, a,last_saved_file,saved,layercode,layers
     file = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select file", filetypes=(
         ("Sprite File", "*.sprite"), ("Text Files", "*.txt")
-        , ("PNG Files", "*.png")))
+        , ("PNG Files", "*.png"),("JPEG Files", "*.jpeg"),("JPG Files", "*.jpg")))
     readData(file)
 if len(sys.argv) > 1:
     filename = sys.argv[1]
@@ -162,9 +267,10 @@ def create_controls_file():
     help_text += f"Ctrl+S: Save\n"
     help_text += f"Ctrl+M: Make Transparent Image\n"
     help_text += f"Ctrl+R: Render\n"
+    help_text += f"Ctrl+L: Go To Layer\n"
     help_text += f"Scroll Up/Down: Change Brush Size\n"
     help_text += f"Alt: Toggle Brush Visibility\n"
-    help_text += f"Escape: Reset Canvas, Open Sprite or Exit\n"
+    help_text += f"Escape: Open Actions Menu\n"
     help_text += f"Shift+Click: Pick Color At Mouse Position In Canvas\n"
     help_text += f"Left/Right Arrow Keys: Change/Create Layers\n"
     help_text+=f"g: Make GIF [From Layers]]\n"
@@ -189,7 +295,7 @@ def create_controls_file():
     showAlert(help_text,button="Ok, I got it!")
 
 if willshowprompt:
-    res = showYesNo( 'Do you want to open a Sprite?')
+    res = showYesNo( 'Do you want to open a Sprite / Image File?')
 
     if res == 'Yes':
 
@@ -201,7 +307,6 @@ if willshowprompt:
 history[len(history)]=pixels.copy()
 current_color = WHITE
 
-can_paint = True
 
 def createPixel(xpos, ypos, color, pixel_size):
     global pixels
@@ -254,27 +359,7 @@ fonty = pygame.font.SysFont("None",24)
 color_text =pixel_text=mouse_text=""
 current_history=[]
 TextMode=False
-def renderPixels(pixels, display, zoom, mouseX, mouseY, size_pixels, panX, panY):
-    i = 0
-    global count_error
-    for j in range(0,len(pixels)):
-        
-            if can_paint == True:
-                if altpressed==True: pygame.draw.rect(display, current_color, pygame.Rect(mouseX,mouseY, size_pixels, size_pixels))
-                        
-                if True:
-                    try:    
-                        pygame.draw.rect(display, pixels[j][2][0], pygame.Rect(
-                            pixels[j][0], pixels[j][1], pixels[j][3], pixels[j][3]))
-                    except:
-                        f=pixels[j][2]
-                        pygame.draw.rect(display, f[0], pygame.Rect(
-                            pixels[j][0], pixels[j][1], 1, 1))
-                        count_error += 1
-                        if count_error <= 1:
-                            error = True
-        #             i += 1
-        # j+=1
+
             
 
         
@@ -312,6 +397,11 @@ def saveFile():
 def hex_to_rgb(hex_code):
     hex_code = hex_code.lstrip('#')
     return [int(hex_code[i:i+2], 16) for i in (0, 2, 4)]
+def swapColors(a,b):
+    global pixels
+    for i in pixels:
+        if i[2][0]==(a[0],a[1],a[2])or (False if type(a)!=str else i[2][0]==hex_to_rgb(a)):
+            i[2]=hex_to_rgb(b) if type(b)==str else b
 def string_to_pixels(text, color, size):
     font = pygame.font.Font(None, size)
     surface = font.render(text, True, color)
@@ -326,14 +416,13 @@ def RunMainLoop():
     while True:
         surf = pygame.Surface ((WINDOW_SIZE[0], WINDOW_SIZE[1]))
         if can_paint == True:
-                if mouse_down == True:
-                    if brush_type == "normal":
-                        createPixel(mouseX, mouseY, current_color, size_pixels)
-                        current_history.append([mouseX, mouseY, current_color, size_pixels])
-                    else:
-                        createPixel(
-                            mouseX, mouseY, random_colors[random.randint(0, 3)], size_pixels)
-    
+                    if mouse_down == True:
+                        if brush_type == "normal":
+                            createPixel(mouseX, mouseY, current_color, size_pixels)
+                            current_history.append([mouseX, mouseY, current_color, size_pixels])
+                        else:
+                            createPixel(
+                                mouseX, mouseY, random_colors[random.randint(0, 3)], size_pixels)
     
         update=False
         
@@ -365,7 +454,7 @@ def RunMainLoop():
         
     
         display = pygame.Surface((w1, w2))
-        zoom = screen_division / 2
+        # zoom = screen_division / 2
         w1 = WINDOW_SIZE[0] / screen_division
         w2 = WINDOW_SIZE[1] / screen_division
         rel = pygame.mouse.get_rel()
@@ -420,6 +509,8 @@ def RunMainLoop():
                         current_color= (color_at_mouse_pos.r,color_at_mouse_pos.g,color_at_mouse_pos.b)
                         #print(current_color)
                     
+                
+    
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
                     
@@ -477,7 +568,11 @@ def RunMainLoop():
                     if res=='Yes':
                         create_controls_file()
                 if event.key==K_l and pygame.key.get_mods() & KMOD_CTRL:
-                    res=pyautogui.prompt('Layer Number:', 'Layer Number') # type: ignore
+                    res=eval(pyautogui.prompt('Layer Number:', 'Layer Number')) # type: ignore
+                    if res!=None:
+                        if (res) <=layers:
+                            layercode=res
+                            pixels=pixel_animation[layercode].copy()
                 if event.key == K_g:
                     images = []
                     finalgifset=[]
@@ -533,11 +628,15 @@ def RunMainLoop():
                     #     relative_mouse_x = mouse_x - rectangle.x
                     #     relative_mouse_y = mouse_y - rectangle.y
                         
-                if event.key == K_z and pygame.key.get_mods() & KMOD_CTRL and len(history)>1:
-                    pixels = history[len(history)-2].copy()
-                    
-                    history.pop(len(history)-1)
-                    renderPixels(pixels, display, zoom, mouseX, mouseY, size_pixels,pygame.mouse.get_rel()[0],pygame.mouse.get_rel()[1])
+                if event.key == K_z and pygame.key.get_mods() & KMOD_CTRL and len(history) > 1:
+    # Undo the last action
+                    pixels = history[len(history) - 2].copy()
+                    renderPixels(pixels, display, zoom, mouseX, mouseY, size_pixels, pygame.mouse.get_rel()[0], pygame.mouse.get_rel()[1])
+    #             elif event.key == K_y and pygame.key.get_mods() & KMOD_CTRL and len(history) > 1:
+    # # Redo the last undone action
+    #                 pixels = history[next((i for i, item in enumerate(history.items()) if item[0] == pixels), None)].copy()
+    #                 history.append(pixels)
+    #                 renderPixels(pixels, display, zoom, mouseX, mouseY, size_pixels, pygame.mouse.get_rel()[0], pygame.mouse.get_rel()[1])
                 if event.key == K_s and pygame.key.get_mods() & KMOD_CTRL:
                     if saved==False:
                         saveFile()
@@ -546,12 +645,26 @@ def RunMainLoop():
                             f.write(str(pixel_animation)) # type: ignore
                         f.close()
                 if event.key == K_c:
-                    color = colorchooser.askcolor(title="Pick a Color")
-                    if color[1]:
-                        #print("Selected color:", color[1])
-                        current_color = color[1]
-                        root = Tk()
-                        root.withdraw()
+                    if pygame.key.get_mods() & KMOD_CTRL:
+                        color = colorchooser.askcolor(title=f"Pick a Color to Swap {current_color} With")
+                        print("Selected color:", color[1])
+                        if color[1]:
+                            #print("Selected color:", color[1])
+                            history[len(history)]=(pixels.copy())
+                            
+                            swapColors(current_color,color[1])
+                            renderPixels(pixels, display, zoom, mouseX, mouseY, size_pixels,pygame.mouse.get_rel()[0],pygame.mouse.get_rel()[1])
+                            
+                                
+                        
+                        
+                    else:
+                        color = colorchooser.askcolor(title="Pick a Color")
+                        if color[1]:
+                            #print("Selected color:", color[1])
+                            current_color = color[1]
+                            root = Tk()
+                            root.withdraw()
     
                 if event.key == pygame.K_KP1:
                     screen.fill(BLACK)
@@ -682,5 +795,5 @@ def RunMainLoop():
         pygame.draw.rect(screen, (50, 50, 50), (0, WINDOW_SIZE[1] - BAR_HEIGHT, WINDOW_SIZE[0], BAR_HEIGHT))
 
 
-    
+RunMainLoop()    
                 
