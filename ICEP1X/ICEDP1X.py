@@ -221,14 +221,14 @@ def readData (file):
                             color_freq[color_tags.index(rows[i+k][j][2])]+=1
                     if all(isinstance(freq, int) and freq > 0 for freq in color_freq):
 
-                        rows[i][j][2]=color_tags[color_freq.index(max(color_freq))]
+                        rows[i][j][2]=color_tags[color_freq.index(max(color_freq)if max(color_freq)!=None else color_freq[0])]
                         rows[i][j][3]=scale_factor
                         rows2.append(rows[i][j])
-                        rows2[counter_rows][2]=color_tags[color_freq.index(max(color_freq))]
+                        rows2[counter_rows][2]=color_tags[color_freq.index(max(color_freq)if max(color_freq)!=None else color_freq[0]))]
                         rows2[counter_rows][3]=scale_factor
                     else:
                         rows2.append(rows[i][j])
-                        rows2[counter_rows][2]=color_tags[color_freq.index(max(color_freq))]
+                        rows2[counter_rows][2]=color_tags[color_freq.index(max(color_freq)if max(color_freq)!=None else color_freq[0])]
                         rows2[counter_rows][3]=scale_factor
                     counter_columns+=1
                     # print(color_tags)
