@@ -795,5 +795,5 @@ def RunMainLoop():
         pygame.draw.rect(screen, (50, 50, 50), (0, WINDOW_SIZE[1] - BAR_HEIGHT, WINDOW_SIZE[0], BAR_HEIGHT))
 
 
-RunMainLoop()    
+  
                 
