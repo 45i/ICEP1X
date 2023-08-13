@@ -28,6 +28,7 @@ An example `.sprite` file is included in `oglethorpe.sprite`, that renders this:
 - GIF creation
 - Layered Editing
 - Automatic Code Update from repo
+- Opening Images as "pixel art"
 
 Expect more `soon`
 
