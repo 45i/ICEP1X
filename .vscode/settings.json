@@ -3,5 +3,7 @@
         "editor.defaultFormatter": "ms-python.python"
     },
     "python.formatting.provider": "none",
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "editor.acceptSuggestionOnEnter": "on",
+    "python.analysis.autoImportCompletions": true
 }
